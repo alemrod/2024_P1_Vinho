@@ -2,18 +2,40 @@ DO $$
 DECLARE
     country_nome RECORD;
     media NUMERIC;
+    country_name VARCHAR(1000);
 BEGIN
     FOR country_nome IN
         SELECT DISTINCT country FROM vinho
     LOOP
-        EXECUTE '
-            SELECT AVG(price) FROM vinho WHERE country = $1'
-        INTO media
-        USING country_nome.country;
-
-        RAISE NOTICE 'A média do valor do vinho no país % é R$ %', country_nome.country, media;
+        country_name := country_nome.country;
+        IF country_name IS NOT NULL THEN
+            EXECUTE '
+                SELECT AVG(price) FROM vinho WHERE country = ''' || country_name || ''''
+            INTO media;     
+            INSERT INTO tabela_resultante (nome_pais, preco_medio) VALUES (country_name, media);
+        END IF;
     END LOOP;
 END $$;
+
+
+
+
+-- DO $$
+-- DECLARE
+--     country_nome RECORD;
+--     media NUMERIC;
+-- BEGIN
+--     FOR country_nome IN
+--         SELECT DISTINCT country FROM vinho
+--     LOOP
+--         EXECUTE '
+--             SELECT AVG(price) FROM vinho WHERE country = $1'
+--         INTO media
+--         USING country_nome.country;
+
+--         RAISE NOTICE 'A média do valor do vinho no país % é R$ %', country_nome.country, media;
+--     END LOOP;
+-- END $$;
 
 
 
