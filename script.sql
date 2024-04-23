@@ -26,3 +26,4 @@ ALTER TABLE vinho DROP COLUMN taster_twitter_handle;
 ALTER TABLE vinho DROP COLUMN title;
 ALTER TABLE vinho DROP COLUMN variety;
 ALTER TABLE vinho DROP COLUMN winery;
+
